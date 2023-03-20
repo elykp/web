@@ -12,8 +12,12 @@
 		"strictNullChecks": true,
 		"noImplicitAny": false,
 		"paths": {
-			"~/*": ["./src/*"],
-			"~": ["./src"]
+			"$lib/*": ["./src/lib/*"],
+			"$lib": ["./src/lib"],
+			"$utils/*": ["./src/utils/*"],
+			"$utils": ["./src/utils"],
+			"$constants/*": ["./src/constants/*"],
+			"$constants": ["./src/constants"]
 		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias

@@ -39,6 +39,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"daisyui": "^2.51.4"
+		"clsx": "^1.2.1",
+		"daisyui": "^2.51.4",
+		"oidc-client": "^1.11.5",
+		"rxjs": "^7.8.0"
 	}
 }
