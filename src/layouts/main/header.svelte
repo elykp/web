@@ -1,0 +1,42 @@
+<script lang="ts">
+	import { logout, signIn, user$ } from '$lib/data-access/auth';
+	import Avatar from '../../components/avatar/avatar.svelte';
+	import Dropdown from '../../components/dropdown/dropdown.svelte';
+</script>
+
+<nav class="h-[64px] bg-gray-800">
+	<div class="h-full flex items-center mx-auto container">
+		<a class="capitalize font-bold text-2xl dark:text-white" href="/">ELYKP</a>
+		<div class="flex-grow" />
+		{#if $user$}
+			<Dropdown>
+				<div
+					slot="overlay"
+					class="w-[250px] menu menu-compact dark:bg-gray-700 rounded-lg shadow-lg"
+				>
+					<div class="px-4 pt-2 pb-1">
+						<p class="font-medium truncate">
+							{$user$.profile.name}
+						</p>
+						<a
+							href={`/${$user$.profile.preferred_username}`}
+							class="block link text-sm font-medium truncate"
+							>{$user$.profile.preferred_username}
+						</a>
+					</div>
+					<div class="divider my-0" />
+					<li><a>Item 1</a></li>
+					<li><a>Item 2</a></li>
+					<li><a>Item 3</a></li>
+					<div class="divider my-0" />
+					<div class="px-2 pt-1 pb-2">
+						<button class="btn btn-block btn-sm btn-outline" on:click={logout}>Logout</button>
+					</div>
+				</div>
+				<Avatar src={$user$.profile.picture} w="w-10" />
+			</Dropdown>
+		{:else}
+			<button class="btn btn-primary btn-sm" on:click={signIn}>Login</button>
+		{/if}
+	</div>
+</nav>
