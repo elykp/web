@@ -31,7 +31,11 @@
 >
 	<span>{data.message}</span>
 	<div class="flex-grow" />
-	<i on:click={handleDequeue} on:keypress={handleDequeue} class="bi bi-x-circle cursor-pointer" />
+	<i
+		on:click={handleDequeue}
+		on:keypress={handleDequeue}
+		class="bi bi-x-circle text-xl cursor-pointer"
+	/>
 </div>
 
 <style lang="postcss">

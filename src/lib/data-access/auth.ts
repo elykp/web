@@ -5,6 +5,7 @@ import {
 	type User
 } from 'oidc-client';
 import { map } from 'rxjs';
+
 import { writable } from '../store';
 
 interface Auth {

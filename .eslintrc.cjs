@@ -33,6 +33,7 @@ module.exports = {
 		'@typescript-eslint/no-non-null-assertion': 'off',
 		'no-unused-vars': 'off',
 		'@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+		'no-empty': ['error', { allowEmptyCatch: true }],
 		'no-empty-function': 'off',
 		'@typescript-eslint/no-empty-function': ['error', { allow: ['arrowFunctions'] }],
 		'no-console': 'warn',
@@ -48,7 +49,7 @@ module.exports = {
 			{
 				pathGroups: [
 					{
-						pattern: '~/**',
+						pattern: '$*/**',
 						group: 'internal'
 					}
 				],
