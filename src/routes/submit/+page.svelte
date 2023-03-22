@@ -1,5 +1,7 @@
 <script lang="ts">
 	import type { ChangeEventHandler } from 'svelte/elements';
+	import Select from 'svelte-select';
+
 	import { t } from '$lib/i18n';
 	import { readFileAsync } from '$utils/helpers';
 
@@ -38,14 +40,21 @@
 					{/if}
 				</div>
 			</div>
-			<select class="select select-bordered w-full">
-				<option disabled selected>Pick your favorite Simpson</option>
-				<option>Homer</option>
-				<option>Marge</option>
-				<option>Bart</option>
-				<option>Lisa</option>
-				<option>Maggie</option>
-			</select>
+			<div class="svelte-select">
+				<Select
+					class="h-12 !bg-base-100 !border-base-content !border-opacity-20"
+					loadOptions={async () => {
+						const resp = await fetch('https://jsonplaceholder.typicode.com/users');
+						const users = await resp.json();
+						return users.map((u) => ({
+							label: u.username,
+							value: u.id
+						}));
+					}}
+				>
+					<div slot="empty" class="p-3 bg-base-200 border-base-200">Nothing to see here...</div>
+				</Select>
+			</div>
 		</div>
 		<div class="" />
 	</div>

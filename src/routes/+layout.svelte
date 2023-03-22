@@ -6,6 +6,7 @@
 
 	import { isLoading$ } from '$lib/data-access/auth';
 	import { initialize } from '$utils/app-init';
+
 	import ToastProvider from '../components/toast/toast-provider.svelte';
 	import Header from '../layouts/main/header.svelte';
 

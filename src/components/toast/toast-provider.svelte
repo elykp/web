@@ -1,5 +1,6 @@
 <script>
 	import { toastStore$ } from '$lib/data-access/toast';
+
 	import Toast from './toast.svelte';
 </script>
 

@@ -1,44 +1,8 @@
 @tailwind base;
-
-@layer base {
-	h1,
-	h2,
-	h3,
-	h4,
-	h5,
-	h6 {
-		@apply font-medium;
-	}
-
-	h1 {
-		@apply text-2xl;
-	}
-
-	h2 {
-		@apply text-xl;
-	}
-
-	h3 {
-		@apply text-lg;
-	}
-
-	h4 {
-		@apply text-base;
-	}
-
-	h5 {
-		@apply text-sm;
-	}
-
-	h6 {
-		@apply text-xs;
-	}
-}
-
 @tailwind components;
 @tailwind utilities;
 
 i[class^='bi-']::before,
 i[class*=' bi-']::before {
-	line-height: 1.1 !important;
+	line-height: 1.2 !important;
 }
