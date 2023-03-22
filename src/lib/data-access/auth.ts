@@ -6,6 +6,7 @@ import {
 } from 'oidc-client';
 import { map } from 'rxjs';
 
+import { enqueue } from './toast';
 import { writable } from '../store';
 
 interface Auth {
@@ -63,7 +64,8 @@ export const initOidc = () => {
 
 const getUser = () => manager.getUser();
 
-export const signIn = (...args: any[]) => manager.signinRedirect(args);
+export const signIn = (...args: any[]) =>
+	manager.signinRedirect(args).catch((e) => enqueue(e?.message, { variant: 'error' }));
 
 export const logout = () => manager.signoutRedirect();
 
