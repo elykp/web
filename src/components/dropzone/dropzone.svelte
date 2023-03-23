@@ -72,19 +72,19 @@
 		return constructedIFile;
 	};
 
+	const revokeFileObjectURL = (file: IFile) => {
+		if (file.previewUrl) {
+			URL.revokeObjectURL(file.previewUrl);
+		}
+	};
+
 	const onFinish = () => {
-		files.forEach((file) => {
-			if (file.previewUrl) {
-				URL.revokeObjectURL(file.previewUrl);
-			}
-		});
+		files.forEach(revokeFileObjectURL);
 	};
 
 	const handleRemove = (file: IFile) => {
 		files = files.filter((it) => it.id !== file.id);
-		if (file.previewUrl) {
-			URL.revokeObjectURL(file.previewUrl);
-		}
+		revokeFileObjectURL(file);
 	};
 
 	const resetFileInput = (e: any) => {
