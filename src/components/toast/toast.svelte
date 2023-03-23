@@ -27,7 +27,7 @@
 
 <div
 	out:fly={{ x: 100, opacity: 0, duration: 300 }}
-	class={clsx('w-fit max-w-[400px] min-w-[200px] alert', data.variant)}
+	class={clsx('w-fit max-w-[400px] min-w-[200px] alert flex-row', data.variant)}
 >
 	<span>{data.message}</span>
 	<div class="flex-grow" />
