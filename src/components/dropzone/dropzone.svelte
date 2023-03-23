@@ -114,12 +114,12 @@
 				{:else}
 					<i class="bi bi-image text-3xl" />
 				{/if}
-				<p>Drag and drop your files here</p>
+				<p>{$t('drag_and_drop_your_files_here')}</p>
 				<div class="divider uppercase font-semibold">{$t('or')}</div>
 				<button
 					class="btn btn-primary"
 					class:pointer-events-none={isDragging}
-					on:click={handleBrowseFile}>Browse files</button
+					on:click={handleBrowseFile}>{$t('browse_files')}</button
 				>
 			</div>
 		{/if}
