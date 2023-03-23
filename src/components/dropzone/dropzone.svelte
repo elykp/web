@@ -22,7 +22,7 @@
 	};
 
 	const handleInputChange: ChangeEventHandler<HTMLInputElement> = async (e) => {
-		handleProcessFiles(e.currentTarget.files);
+		processFileList(e.currentTarget.files);
 	};
 
 	const handleDrag: DragEventHandler<HTMLDivElement> = (e) => {
@@ -36,10 +36,10 @@
 
 	const handleDrop: DragEventHandler<HTMLDivElement> = (e) => {
 		isDragging = false;
-		handleProcessFiles(e.dataTransfer?.files);
+		processFileList(e.dataTransfer?.files);
 	};
 
-	const handleProcessFiles = (fileList?: FileList | null) => {
+	const processFileList = (fileList?: FileList | null) => {
 		if (fileList) {
 			try {
 				validateFileList(fileList, limitMb, accept);
