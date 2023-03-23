@@ -17,7 +17,9 @@
 			"$utils/*": ["./src/utils/*"],
 			"$utils": ["./src/utils"],
 			"$constants/*": ["./src/constants/*"],
-			"$constants": ["./src/constants"]
+			"$constants": ["./src/constants"],
+			"$components/*": ["./src/components/*"],
+			"$components": ["./src/components"]
 		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
