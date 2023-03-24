@@ -12,10 +12,10 @@
 	export let accept: string | undefined | null = undefined;
 	export let multiple = false;
 	export let limitMb = 5;
+	export let files: IFile[] = [];
 
 	let input: HTMLInputElement;
 	let isDragging = false;
-	let files: IFile[] = [];
 
 	const handleBrowseFile = () => {
 		input?.click();
@@ -62,7 +62,7 @@
 		const constructedIFile = new File([file], file.name, {
 			type: file.type
 		}) as IFile;
-		constructedIFile.id = Date.now().toString();
+		constructedIFile.id = Math.ceil(Math.random() * 10000).toString();
 		const fileIcon = getIconByFileType(file.type);
 		constructedIFile.icon = fileIcon;
 		if (!fileIcon) {

@@ -1,3 +1,5 @@
+<svelte:options immutable />
+
 <script lang="ts">
 	import clsx from 'clsx';
 	import { createEventDispatcher } from 'svelte';
@@ -35,18 +37,11 @@
 			/>
 		{/if}
 	</div>
-	<svg
-		class="bi bi-x-circle-fill stroke-current flex-shrink-0 h-6 w-6 absolute top-1 right-1 cursor-pointer text-white"
+	<div
+		class="h-8 w-8 absolute top-2 right-2 grid place-content-center cursor-pointer bg-white shadow rounded-full"
 		on:click={() => handleRemove(file)}
 		on:keypress={() => handleRemove(file)}
-		xmlns="http://www.w3.org/2000/svg"
-		fill="none"
-		viewBox="0 0 24 24"
-		><path
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			stroke-width="2"
-			d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-		/></svg
 	>
+		<i class="bi bi-x text-black text-2xl" />
+	</div>
 </div>
