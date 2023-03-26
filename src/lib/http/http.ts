@@ -2,6 +2,8 @@ import queryString, { type StringifyOptions } from 'query-string';
 import { switchMap, throwError } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
+import { getAccessToken$ } from '$lib/data-access/auth';
+
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 interface URLConstructor {
@@ -17,7 +19,7 @@ const stringifyOptions: StringifyOptions = {
 	skipEmptyString: true
 };
 
-const BASE_URL = 'http://localhost:8081';
+const BASE_URL = 'http://localhost:8765';
 
 const URLConstructor = (url: URL) => {
 	if (typeof url === 'string') {
@@ -46,12 +48,19 @@ export const http = <TData>(method: Method, url: URL, data?: unknown) => {
 		}
 	}
 
-	return fromFetch(_url, reqInit).pipe(
-		switchMap((response) => {
-			if (response.ok) {
-				return response.json() as Promise<TData>;
+	return getAccessToken$.pipe(
+		switchMap((accessToken) => {
+			if (accessToken) {
+				reqInit.headers!['Authorization'] = 'Bearer ' + accessToken;
 			}
-			return throwError(() => new Error(response.statusText));
+			return fromFetch(_url, reqInit).pipe(
+				switchMap((response) => {
+					if (response.ok) {
+						return response.json() as Promise<TData>;
+					}
+					return throwError(() => new Error(response.statusText));
+				})
+			);
 		})
 	);
 };

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { logout, signIn, user$ } from '$lib/data-access/auth';
+	import { logout, signIn, _user$ } from '$lib/data-access/auth';
 	import { t } from '$lib/i18n';
 
 	import Avatar from '../../components/avatar/avatar.svelte';
@@ -10,7 +10,7 @@
 	<div class="h-full flex items-center mx-auto container gap-5">
 		<a class="capitalize font-bold text-2xl dark:text-white" href="/">ELYKP</a>
 		<div class="flex-grow" />
-		{#if $user$}
+		{#if $_user$}
 			<Dropdown>
 				<div
 					slot="overlay"
@@ -18,12 +18,12 @@
 				>
 					<div class="px-4 pt-2 pb-1">
 						<p class="font-medium truncate">
-							{$user$.profile.name}
+							{$_user$.profile.name}
 						</p>
 						<a
-							href={`/${$user$.profile.preferred_username}`}
+							href={`/${$_user$.profile.preferred_username}`}
 							class="block link text-sm font-medium truncate"
-							>{$user$.profile.preferred_username}
+							>{$_user$.profile.preferred_username}
 						</a>
 					</div>
 					<div class="divider my-0" />
@@ -37,7 +37,7 @@
 						</button>
 					</div>
 				</div>
-				<Avatar src={$user$.profile.picture} w="w-10" />
+				<Avatar src={$_user$.profile.picture} w="w-10" />
 			</Dropdown>
 			<a href="/submit">
 				<button class="btn btn-sm btn-primary gap-2">
