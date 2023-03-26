@@ -25,7 +25,7 @@
 
 <svelte:window on:resize={initPosition} />
 
-<button bind:this={anchor} on:click={() => (visible = true)}><slot /></button>
+<button class="flex" bind:this={anchor} on:click={() => (visible = true)}><slot /></button>
 
 {#if visible}
 	<div
