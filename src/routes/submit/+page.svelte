@@ -35,7 +35,9 @@
 	};
 
 	const handleSelectTag = (tag: Tag) => {
-		selectedTags = [...selectedTags, tag];
+		if (selectedTags.length < 3 || !selectedTags.some((it) => it.id === tag.id)) {
+			selectedTags = [...selectedTags, tag];
+		}
 	};
 
 	const handleRemoveTag = (payload: Tag | Tag[]) => {
@@ -131,7 +133,7 @@
 							<i
 								class="bi bi-plus text-xl cursor-pointer"
 								on:click={() => {
-									selectedTags = [...selectedTags, item];
+									handleSelectTag(item);
 								}}
 								on:keypress={() => {}}
 							/>
