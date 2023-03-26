@@ -1,8 +1,11 @@
 <script lang="ts">
 	import Select from 'svelte-select';
 	import type { SelectProps } from 'svelte-select/Select.svelte';
-	export let value: any;
+
 	type $$Props = SelectProps;
+
+	export let value: any;
+	export let filterText: string | undefined;
 </script>
 
 <Select
@@ -10,7 +13,9 @@
 	class="svelte-select h-12 !bg-base-100 !border-base-content !border-opacity-20"
 	on:change
 	on:select
+	on:clear
 	bind:value
+	bind:filterText
 	{...$$restProps}
 >
 	<div slot="empty" class="p-3 bg-base-200 border-base-200">
@@ -19,6 +24,13 @@
 	</div>
 	<div slot="chevron-icon">
 		<i class="bi bi-chevron-down" />
+	</div>
+	<div slot="item" let:item>
+		{#if $$slots.item}
+			<slot name="item" {item} />
+		{:else}
+			{item[$$restProps.label]}
+		{/if}
 	</div>
 </Select>
 
