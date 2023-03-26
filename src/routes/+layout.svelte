@@ -1,21 +1,29 @@
-<script>
-	import { onMount } from 'svelte';
+<script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
 
 	// Prioritised import to preload styles
 	import '../app.css';
 
-	import { isLoading$ } from '$lib/data-access/auth';
+	import { globalLoading$ } from '$lib/data-access/global';
 	import { initialize } from '$utils/app-init';
 
 	import ToastProvider from '../components/toast/toast-provider.svelte';
 	import Header from '../layouts/main/header.svelte';
 
+	let unsubcribes: any[] = [];
+
 	onMount(() => {
-		initialize();
+		unsubcribes = initialize();
+	});
+
+	onDestroy(() => {
+		unsubcribes.forEach((unsubcribe) => {
+			unsubcribe();
+		});
 	});
 </script>
 
-{#if $isLoading$}
+{#if $globalLoading$}
 	<div>Loading...</div>
 {:else}
 	<Header />

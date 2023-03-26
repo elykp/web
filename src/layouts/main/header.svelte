@@ -33,7 +33,7 @@
 					<div class="divider my-0" />
 					<div class="px-2 pt-1 pb-2">
 						<button class="btn btn-block btn-sm btn-outline" on:click={logout}>
-							{$t('logout')}
+							{$t('log_out')}
 						</button>
 					</div>
 				</div>

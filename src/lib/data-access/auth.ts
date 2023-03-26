@@ -6,13 +6,9 @@ import {
 } from 'oidc-client';
 import { map } from 'rxjs';
 
+import { globalLoading } from './global';
 import { enqueue } from './toast';
 import { writable } from '../store';
-
-interface Auth {
-	user: User | null;
-	isLoading: boolean;
-}
 
 const settings = (webOrigin: string): UserManagerSettings => ({
 	userStore: new WebStorageStateStore({
@@ -32,17 +28,10 @@ const settings = (webOrigin: string): UserManagerSettings => ({
 
 let manager: UserManager;
 
-export const auth$ = writable<Auth>({
-	user: null,
-	isLoading: true
-});
+export const _user$ = writable<User | null>(null);
 
 const setUser = (user: User) => {
-	auth$.update((state) => ({
-		...state,
-		isLoading: false,
-		user
-	}));
+	_user$.set(user);
 };
 
 export const initOidc = () => {
@@ -60,6 +49,11 @@ export const initOidc = () => {
 	manager.events.addSilentRenewError(() => {
 		logout();
 	});
+
+	return () => {
+		manager.events.removeUserLoaded(() => {});
+		manager.events.removeSilentRenewError(() => {});
+	};
 };
 
 const getUser = () => manager.getUser();
@@ -81,18 +75,19 @@ export const startAuthentication = async () => {
 			} else {
 				manager.signinSilent({}).catch(() => {});
 			}
+			return () => {};
 		})
 		.catch()
 		.finally(() => {
-			auth$.update((state) => ({
+			globalLoading.update((state) => ({
 				...state,
-				isLoading: false
+				auth: false
 			}));
 		});
 };
 
-export const user$ = auth$.pipe(map((x) => x.user));
+export const user$ = _user$.asObservable();
 
-export const isAuthenticated$ = auth$.pipe(map((x) => !!x.user && !x.user.expired));
+export const isAuthenticated$ = _user$.pipe(map((user) => !!user && !user.expired));
 
-export const isLoading$ = auth$.pipe(map((x) => x.isLoading));
+export const getAccessToken$ = _user$.pipe(map((user) => user?.access_token));
