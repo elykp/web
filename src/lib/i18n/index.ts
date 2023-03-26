@@ -1,20 +1,28 @@
 import { derived, writable } from 'svelte/store';
 
-import translations from './translations';
+import { globalLoading } from '$lib/data-access/global';
 
 type Vars = Record<string, any>;
 
-export const locale = writable('en');
+type Translations = Record<string, string>;
 
-export const locales = Object.keys(translations);
+type SupportedLocale = 'en' | 'vi';
 
-function translate(locale: string, key: string, vars: Vars) {
+export const locale = writable<SupportedLocale>('en');
+
+const translations = writable<Translations>({});
+
+function translate(translations: Translations, key: string, vars: Vars) {
 	if (!key) throw new Error('no key provided to $t()');
-	if (!locale) throw new Error(`no translation for key "${key}"`);
 
 	let text: string;
 
-	text = translations[locale][key] || key;
+	const translatedText = translations[key];
+	if (!translatedText) {
+		console.warn(`No translation found for key '${key}'`);
+	}
+
+	text = translatedText || key;
 
 	Object.keys(vars).map((k) => {
 		const regex = new RegExp(`{{${k}}}`, 'g');
@@ -25,8 +33,24 @@ function translate(locale: string, key: string, vars: Vars) {
 }
 
 export const t = derived(
-	locale,
-	(locale) =>
+	translations,
+	(translations) =>
 		(key: string, vars: Vars = {}) =>
-			translate(locale, key, vars)
+			translate(translations, key, vars)
 );
+
+export const init18n = () => {
+	return locale.subscribe((locale) => {
+		const url = `/locales/${locale}.json`;
+		fetch(new URL(url, import.meta.url))
+			.then((res) => res.json() as Promise<Translations>)
+			.then(translations.set)
+			.finally(() => {
+				globalLoading.update((state) => ({ ...state, i18n: false }));
+			});
+	});
+};
+
+export const changeLanguage = (v: SupportedLocale) => {
+	locale.set(v);
+};
