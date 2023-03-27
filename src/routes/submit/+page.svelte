@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+		debounceTime,
 		distinctUntilChanged,
 		firstValueFrom,
 		from,
@@ -20,12 +21,15 @@
 	import { writable } from '$lib/store';
 	import { encodeImageToBlurhash } from '$utils/blurhash';
 
-	let selectedTags: Tag[] = [];
+	type STag = Tag & { new?: boolean };
+
+	let selectedTags: STag[] = [];
 	let uploadedFiles: IFile[] = [];
 	let title: string;
 	let createPhotoLoading = false;
 	let filterText$ = writable('');
 	let stop$ = new Subject<void>();
+	let items: STag[];
 
 	const trendingTags$ = getTrendingTags();
 
@@ -34,13 +38,13 @@
 		return await firstValueFrom(tagsApi.getRelatedTagByQuery(filterText));
 	};
 
-	const handleSelectTag = (tag: Tag) => {
+	const handleSelectTag = (tag: STag) => {
 		if (selectedTags.length < 3 || !selectedTags.some((it) => it.id === tag.id)) {
 			selectedTags = [...selectedTags, tag];
 		}
 	};
 
-	const handleRemoveTag = (payload: Tag | Tag[]) => {
+	const handleRemoveTag = (payload: STag | STag[]) => {
 		if (Array.isArray(payload)) {
 			selectedTags = selectedTags.filter((it) => payload.findIndex((p) => p.id === it.id) === -1);
 		} else {
@@ -74,14 +78,25 @@
 					uploadedFiles = [];
 					selectedTags = [];
 					file.previewUrl && URL.revokeObjectURL(file.previewUrl);
+					items = [];
 					enqueue('Create post success', { variant: 'success' });
 				})
 			)
 			.subscribe();
 	};
 
+	const handleFilter = (e: CustomEvent) => {
+		const filteredTags = e.detail as STag[];
+		const name = filterText$.getValue();
+		if (!filteredTags?.length && name) {
+			items = [{ id: Date.now(), name, highlighted: name, new: true }];
+		}
+	};
+
 	onMount(() => {
-		filterText$.pipe(distinctUntilChanged(), tap(console.log), takeUntil(stop$)).subscribe();
+		filterText$
+			.pipe(distinctUntilChanged(), debounceTime(300), tap(console.log), takeUntil(stop$))
+			.subscribe();
 	});
 
 	onDestroy(() => {
@@ -111,14 +126,20 @@
 				placeholder={$t('add_at_least_1_tag')}
 				loadOptions={loadSuggestedTags}
 				debounceWait={300}
+				bind:items
 				bind:filterText={$filterText$}
+				on:filter={handleFilter}
 				on:select={(e) => handleSelectTag(e.detail)}
 				on:clear={(e) => handleRemoveTag(e.detail)}
 			>
 				<div class="flex" slot="item" let:item>
-					<span>{@html item.highlighted}</span>
+					{#if item.highlighted}
+						<span>{@html item.highlighted}</span>
+					{/if}
 					<div class="flex-grow" />
-					<span>{item.count}</span>
+					{#if item.count != undefined}
+						<span>{item.count}</span>
+					{/if}
 				</div>
 			</Select>
 			<p><strong>{$t('add_tags_to_categorize_posts')}</strong></p>

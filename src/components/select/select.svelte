@@ -14,6 +14,8 @@
 	on:change
 	on:select
 	on:clear
+	on:filter
+	on:keydown
 	bind:value
 	bind:filterText
 	{...$$restProps}
