@@ -22,7 +22,7 @@
 </script>
 
 <div class="relative grid place-content-center" in:scale={{ easing: quintOut }}>
-	<div class="tooltip mx-auto" data-tip={dataTip}>
+	<div class="ctooltip mx-auto" data-tip={dataTip}>
 		{#if file.icon}
 			<div class="text-center text-base-content">
 				<i class={clsx(file.icon, 'text-3xl md:text-4xl')} />

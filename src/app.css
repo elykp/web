@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+	.ctooltip {
+		@apply tooltip before:whitespace-pre before:content-[attr(data-tip)];
+	}
+}
+
 i[class^='bi-']::before,
 i[class*=' bi-']::before {
 	line-height: 1.2 !important;
